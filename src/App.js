@@ -1,25 +1,34 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
 import './App.css';
+import IdeaForm from './IdeaForm'
+import IdeaContainer from './IdeaContainer'
 
 class App extends Component {
+  constructor() {
+    super()
+    this.state = {
+      ideas: []
+    }
+  }
+
+  addIdea = (idea) => {
+    const newIdea = {...idea, id: Date.now()}
+    const ideas = [...this.state.ideas, newIdea]
+    this.setState({ideas})
+  }
+
+  removeIdea = (id) => {
+    const ideas = this.state.ideas.filter(idea => id !== idea.id)
+    this.setState({ ideas })
+  }
+
   render() {
+    const { ideas } = this.state
     return (
       <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
+        <h3>IdeaBox</h3>
+        <IdeaForm addIdea={this.addIdea} />
+        <IdeaContainer ideas={ideas} removeIdea={this.removeIdea} />
       </div>
     );
   }
